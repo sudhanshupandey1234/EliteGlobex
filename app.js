@@ -4,6 +4,7 @@ const path = require("path");
 const db = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const session = require("express-session");
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", authRoutes);
 
 app.use("/", customerRoutes);
+
+app.use("/", productRoutes);
 
 // View Engine
 app.set("view engine", "ejs");
