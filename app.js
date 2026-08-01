@@ -44,9 +44,45 @@ app.get("/dashboard", (req, res) => {
         return res.redirect("/login");
     }
 
-    res.render("dashboard", {
-    user: req.session.user
-});
+    db.query("SELECT COUNT(*) AS totalCustomers FROM customers", (err, customerResult) => {
+
+        if (err) {
+            console.log(err);
+            return res.send("Database Error");
+        }
+
+        db.query("SELECT COUNT(*) AS totalProducts FROM products", (err, productResult) => {
+
+            if (err) {
+                console.log(err);
+                return res.send("Database Error");
+            }
+
+            db.query("SELECT COUNT(*) AS totalOrders FROM orders", (err, orderResult) => {
+
+                if (err) {
+                    console.log(err);
+                    return res.send("Database Error");
+                }
+
+                res.render("dashboard", {
+
+                    user: req.session.user,
+
+                    totalCustomers: customerResult[0].totalCustomers,
+
+                    totalProducts: productResult[0].totalProducts,
+
+                    totalOrders: orderResult[0].totalOrders
+
+                });
+
+            });
+
+        });
+
+    });
+
 });
 
 app.listen(PORT, () => {
