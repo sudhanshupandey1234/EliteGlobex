@@ -5,8 +5,9 @@ const db = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const session = require("express-session");
 const productRoutes = require("./routes/productRoutes");
-
+const dashboardRoutes = require("./routes/dashboardRoutes");
 const app = express();
+const orderRoutes = require("./routes/orderRoutes");
 
 const PORT = 3000;
 
@@ -23,11 +24,17 @@ app.use(session({
 // Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
+//routes
+
 app.use("/", authRoutes);
 
 app.use("/", customerRoutes);
 
 app.use("/", productRoutes);
+
+app.use("/", dashboardRoutes);
+
+app.use("/", orderRoutes);
 
 // View Engine
 app.set("view engine", "ejs");
@@ -38,52 +45,6 @@ app.get("/", (req, res) => {
     res.render("login");
 });
 
-app.get("/dashboard", (req, res) => {
-
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
-
-    db.query("SELECT COUNT(*) AS totalCustomers FROM customers", (err, customerResult) => {
-
-        if (err) {
-            console.log(err);
-            return res.send("Database Error");
-        }
-
-        db.query("SELECT COUNT(*) AS totalProducts FROM products", (err, productResult) => {
-
-            if (err) {
-                console.log(err);
-                return res.send("Database Error");
-            }
-
-            db.query("SELECT COUNT(*) AS totalOrders FROM orders", (err, orderResult) => {
-
-                if (err) {
-                    console.log(err);
-                    return res.send("Database Error");
-                }
-
-                res.render("dashboard", {
-
-                    user: req.session.user,
-
-                    totalCustomers: customerResult[0].totalCustomers,
-
-                    totalProducts: productResult[0].totalProducts,
-
-                    totalOrders: orderResult[0].totalOrders
-
-                });
-
-            });
-
-        });
-
-    });
-
-});
 
 app.listen(PORT, () => {
     console.log(`Server Running On http://localhost:${PORT}`);

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3>Create New Order</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form action="/orders/add" method="POST" id="orderForm">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Customer
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="customer_id"
+                            required>
+
+                            <option value="">
+                                Select Customer
+                            </option>
+
+                            <% customers.forEach(function(customer){ %>
+
+                                <option value="<%= customer.id %>">
+
+                                    <%= customer.customer_name %>
+
+                                </option>
+
+                            <% }) %>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Order Date
+                        </label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            name="order_date"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h4 class="mb-3">
+                    Products
+                </h4>
+
+                <table
+                    class="table table-bordered align-middle"
+                    id="productTable">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th width="35%">
+                                Product
+                            </th>
+
+                            <th width="12%">
+                                Qty
+                            </th>
+
+                            <th width="18%">
+                                Price
+                            </th>
+
+                            <th width="18%">
+                                Subtotal
+                            </th>
+
+                            <th width="17%">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+
+                                <select
+                                    class="form-select product"
+                                    name="product_id[]"
+                                    required>
+
+                                    <option value="">
+                                        Select Product
+                                    </option>
+
+                                    <% products.forEach(function(product){ %>
+
+                                    <option
+                                        value="<%= product.id %>"
+                                        data-price="<%= product.price %>">
+
+                                        <%= product.product_name %>
+                                        (₹<%= product.price %>)
+
+                                    </option>
+
+                                    <% }) %>
+
+                                </select>
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    class="form-control qty"
+                                    name="quantity[]"
+                                    value="1"
+                                    min="1">
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    class="form-control price"
+                                    name="price[]"
+                                    readonly>
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    class="form-control subtotal"
+                                    readonly>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger removeRow">
+
+                                    Delete
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <button
+                    type="button"
+                    id="addRow"
+                    class="btn btn-primary">
+
+                    + Add Product
+
+                </button>
+
+                <hr>
+                                <div class="row mt-4">
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Total Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="grandTotal"
+                            name="total_amount"
+                            readonly>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Paid Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="paidAmount"
+                            name="paid_amount"
+                            value="0">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Pending Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="pendingAmount"
+                            name="pending_amount"
+                            readonly>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Payment Status
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="payment_status">
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Partial">
+                                Partial
+                            </option>
+
+                            <option value="Paid">
+                                Paid
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Delivery Status
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="delivery_status">
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Packed">
+                                Packed
+                            </option>
+
+                            <option value="Shipped">
+                                Shipped
+                            </option>
+
+                            <option value="In Transit">
+                                In Transit
+                            </option>
+
+                            <option value="Delivered">
+                                Delivered
+                            </option>
+
+                            <option value="Cancelled">
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Tracking Number
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="tracking_number">
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Courier Name
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="courier_name">
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <label class="form-label">
+                    Remarks
+                </label>
+
+                <textarea
+                    class="form-control"
+                    rows="3"
+                    name="remarks"></textarea>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    Save Order
+
+                </button>
+
+                <a
+                    href="/orders"
+                    class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/js/order.js"></script>
+
+</body>
+</html>
