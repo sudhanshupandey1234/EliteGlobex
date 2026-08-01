@@ -72,12 +72,48 @@ const saveOrder = (orderData, callback) => {
 
 };
 
+// ==============================
+// Save Order Items
+// ==============================
+
+const saveOrderItem = (itemData, callback) => {
+
+    const sql = `
+        INSERT INTO order_items
+        (
+            order_id,
+            product_id,
+            quantity,
+            price,
+            subtotal
+        )
+        VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(sql, itemData, callback);
+
+};
+
+// ==============================
+// Delete Order
+// ==============================
+
+const deleteOrder = (id, callback) => {
+
+    const sql = "DELETE FROM orders WHERE id = ?";
+
+    db.query(sql, [id], callback);
+
+};
+
 
 module.exports = {
 
     getCustomers,
     getProducts,
     getOrders,
-    saveOrder
+    saveOrder,
+    saveOrderItem,
+    deleteOrder
 
 };

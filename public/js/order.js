@@ -95,3 +95,51 @@ paidAmount.addEventListener("input", function () {
     calculatePending();
 
 });
+// ==============================
+// Add New Product Row
+// ==============================
+
+const addRowBtn = document.getElementById("addRow");
+
+addRowBtn.addEventListener("click", function () {
+
+    const tbody = document.querySelector("#productTable tbody");
+
+    const firstRow = tbody.querySelector("tr");
+
+    const newRow = firstRow.cloneNode(true);
+
+    // Reset Values
+    newRow.querySelector(".product").selectedIndex = 0;
+    newRow.querySelector(".qty").value = 1;
+    newRow.querySelector(".price").value = "";
+    newRow.querySelector(".subtotal").value = "";
+
+    tbody.appendChild(newRow);
+
+});
+// ==============================
+// Delete Product Row
+// ==============================
+
+productTable.addEventListener("click", function (e) {
+
+    if (e.target.classList.contains("removeRow")) {
+
+        const rows = document.querySelectorAll("#productTable tbody tr");
+
+        if (rows.length > 1) {
+
+            e.target.closest("tr").remove();
+
+            calculateGrandTotal();
+
+        } else {
+
+            alert("At least one product is required.");
+
+        }
+
+    }
+
+});

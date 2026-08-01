@@ -70,7 +70,11 @@ exports.saveOrder = (req, res) => {
         delivery_status,
         tracking_number,
         courier_name,
-        remarks
+        remarks,
+
+        product_id,
+        quantity,
+        price
 
     } = req.body;
 
@@ -89,15 +93,70 @@ exports.saveOrder = (req, res) => {
 
     ];
 
-    orderModel.saveOrder(orderData, (err) => {
+    orderModel.saveOrder(orderData, (err, result) => {
 
         if (err) {
 
-    console.log("MYSQL ERROR => ", err);
+            console.log(err);
 
-    return res.send(err.sqlMessage);
+            return res.send(err.sqlMessage);
 
-}
+        }
+
+        const orderId = result.insertId;
+
+        // ==========================
+        // Save Products
+        // ==========================
+
+        for (let i = 0; i < product_id.length; i++) {
+
+            const subtotal = quantity[i] * price[i];
+
+            const itemData = [
+
+                orderId,
+                product_id[i],
+                quantity[i],
+                price[i],
+                subtotal
+
+            ];
+
+            orderModel.saveOrderItem(itemData, (err) => {
+
+                if (err) {
+
+                    console.log(err);
+
+                }
+
+            });
+
+        }
+
+        res.redirect("/orders");
+
+    });
+
+};
+// ==============================
+// Delete Order
+// ==============================
+
+exports.deleteOrder = (req, res) => {
+
+    const id = req.params.id;
+
+    orderModel.deleteOrder(id, (err) => {
+
+        if (err) {
+
+            console.log(err);
+
+            return res.send(err.sqlMessage);
+
+        }
 
         res.redirect("/orders");
 
