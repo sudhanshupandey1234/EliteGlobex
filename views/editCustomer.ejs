@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Customer</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h2>Edit Customer</h2>
+
+    <hr>
+
+    <form action="/customers/update/<%= customer.id %>" method="POST">
+
+        <div class="mb-3">
+            <label>Customer Name</label>
+            <input
+                type="text"
+                name="customer_name"
+                class="form-control"
+                value="<%= customer.customer_name %>"
+                required>
+        </div>
+
+        <div class="mb-3">
+            <label>Company Name</label>
+            <input
+                type="text"
+                name="company_name"
+                class="form-control"
+                value="<%= customer.company_name %>">
+        </div>
+
+        <div class="mb-3">
+            <label>Phone</label>
+            <input
+                type="text"
+                name="phone"
+                class="form-control"
+                value="<%= customer.phone %>">
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <input
+                type="email"
+                name="email"
+                class="form-control"
+                value="<%= customer.email %>">
+        </div>
+
+        <div class="mb-3">
+            <label>Address</label>
+
+            <textarea
+                name="address"
+                class="form-control"
+                rows="4"><%= customer.address %></textarea>
+
+        </div>
+
+        <button class="btn btn-success">
+            Update Customer
+        </button>
+
+        <a href="/customers" class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
