@@ -105,7 +105,100 @@ const deleteOrder = (id, callback) => {
     db.query(sql, [id], callback);
 
 };
+// ==============================
+// View Order
+// ==============================
 
+const getOrderDetails = (id, callback) => {
+
+    const sql = `
+        SELECT
+            o.*,
+            c.customer_name,
+            c.company_name,
+            c.phone,
+            c.email,
+            c.address,
+            oi.quantity,
+            oi.price,
+            oi.subtotal,
+            p.product_name
+
+        FROM orders o
+
+        JOIN customers c
+        ON o.customer_id = c.id
+
+        JOIN order_items oi
+        ON oi.order_id = o.id
+
+        JOIN products p
+        ON p.id = oi.product_id
+
+        WHERE o.id = ?
+    `;
+
+    db.query(sql, [id], callback);
+
+};
+// ==============================
+// Get Order By ID
+// ==============================
+
+const getOrderById = (id, callback) => {
+
+    const sql = `
+        SELECT
+            o.*,
+            c.customer_name,
+            oi.product_id,
+            oi.quantity,
+            oi.price,
+            oi.subtotal,
+            p.product_name
+
+        FROM orders o
+
+        JOIN customers c
+        ON c.id = o.customer_id
+
+        JOIN order_items oi
+        ON oi.order_id = o.id
+
+        JOIN products p
+        ON p.id = oi.product_id
+
+        WHERE o.id = ?
+    `;
+
+    db.query(sql, [id], callback);
+
+};
+// ==============================
+// Update Order
+// ==============================
+
+const updateOrder = (data, callback) => {
+
+    const sql = `
+        UPDATE orders
+        SET
+            customer_id=?,
+            order_date=?,
+            total_amount=?,
+            paid_amount=?,
+            pending_amount=?,
+            payment_status=?,
+            delivery_status=?,
+            tracking_number=?,
+            courier_name=?,
+            remarks=?
+        WHERE id=?
+    `;
+
+    db.query(sql, data, callback);
+
+};
 
 module.exports = {
 
@@ -114,6 +207,9 @@ module.exports = {
     getOrders,
     saveOrder,
     saveOrderItem,
-    deleteOrder
+    deleteOrder,
+    getOrderDetails,
+    getOrderById,
+    updateOrder
 
 };

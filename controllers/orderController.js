@@ -163,3 +163,131 @@ exports.deleteOrder = (req, res) => {
     });
 
 };
+// ==============================
+// View Order
+// ==============================
+
+exports.viewOrder = (req, res) => {
+
+    const id = req.params.id;
+
+    orderModel.getOrderDetails(id, (err, result) => {
+
+        if (err) {
+
+            console.log(err);
+
+            return res.send(err.sqlMessage);
+
+        }
+
+        res.render("viewOrder", {
+
+            order: result
+
+        });
+
+    });
+
+};
+// ==============================
+// Show Edit Order Page
+// ==============================
+
+exports.showEditOrder = (req, res) => {
+
+    const id = req.params.id;
+
+    orderModel.getOrderById(id, (err, order) => {
+
+        if (err) {
+
+            console.log(err);
+
+            return res.send(err.sqlMessage);
+
+        }
+
+        orderModel.getCustomers((err, customers) => {
+
+            if (err) {
+
+                console.log(err);
+
+                return res.send(err.sqlMessage);
+
+            }
+
+            orderModel.getProducts((err, products) => {
+
+                if (err) {
+
+                    console.log(err);
+
+                    return res.send(err.sqlMessage);
+
+                }
+
+                res.render("editOrder", {
+
+                    order,
+                    customers,
+                    products
+
+                });
+
+            });
+
+        });
+
+    });
+
+};
+
+// ==============================
+// Update Order
+// ==============================
+
+exports.updateOrder = (req, res) => {
+
+    const id = req.params.id;
+
+    const {
+        customer_id,
+        order_date,
+        total_amount,
+        paid_amount,
+        pending_amount,
+        payment_status,
+        delivery_status,
+        tracking_number,
+        courier_name,
+        remarks
+    } = req.body;
+
+    const data = [
+        customer_id,
+        order_date,
+        total_amount,
+        paid_amount,
+        pending_amount,
+        payment_status,
+        delivery_status,
+        tracking_number,
+        courier_name,
+        remarks,
+        id
+    ];
+
+    orderModel.updateOrder(data, (err) => {
+
+        if (err) {
+            console.log(err);
+            return res.send(err.sqlMessage);
+        }
+
+        res.redirect("/orders");
+
+    });
+
+};

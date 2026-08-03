@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Order</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>Order Details</h3>
+
+</div>
+
+<div class="card-body">
+
+<% if(order.length > 0){ %>
+
+<h5>Customer Information</h5>
+
+<hr>
+
+<p><strong>Customer :</strong> <%= order[0].customer_name %></p>
+
+<p><strong>Company :</strong> <%= order[0].company_name %></p>
+
+<p><strong>Phone :</strong> <%= order[0].phone %></p>
+
+<p><strong>Email :</strong> <%= order[0].email %></p>
+
+<p><strong>Address :</strong> <%= order[0].address %></p>
+
+<hr>
+
+<h5>Products</h5>
+
+<table class="table table-bordered">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Product</th>
+
+<th>Qty</th>
+
+<th>Price</th>
+
+<th>Subtotal</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% order.forEach(function(item){ %>
+
+<tr>
+
+<td><%= item.product_name %></td>
+
+<td><%= item.quantity %></td>
+
+<td>₹ <%= item.price %></td>
+
+<td>₹ <%= item.subtotal %></td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+<hr>
+
+<h5>Order Summary</h5>
+
+<p><strong>Total :</strong> ₹ <%= order[0].total_amount %></p>
+
+<p><strong>Paid :</strong> ₹ <%= order[0].paid_amount %></p>
+
+<p><strong>Pending :</strong> ₹ <%= order[0].pending_amount %></p>
+
+<p><strong>Payment :</strong> <%= order[0].payment_status %></p>
+
+<p><strong>Delivery :</strong> <%= order[0].delivery_status %></p>
+
+<p><strong>Tracking No :</strong> <%= order[0].tracking_number %></p>
+
+<p><strong>Courier :</strong> <%= order[0].courier_name %></p>
+
+<% } %>
+
+<a href="/orders" class="btn btn-primary">
+
+Back
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

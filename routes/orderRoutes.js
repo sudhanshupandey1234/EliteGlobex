@@ -5,6 +5,15 @@ const orderController = require("../controllers/orderController");
 
 router.get("/orders", orderController.getOrders);
 
+// View Order
+router.get("/orders/view/:id", orderController.viewOrder);
+
+// Edit Order Page
+router.get("/orders/edit/:id", orderController.showEditOrder);
+
+// Update Order
+router.post("/orders/edit/:id", orderController.updateOrder);
+
 router.get("/orders/add", orderController.showAddOrder);
 
 // Save Order

@@ -40,4 +40,22 @@ res.redirect("/dashboard");
 
 });
 
+// ==============================
+// Logout
+// ==============================
+
+router.get("/logout", (req, res) => {
+
+    req.session.destroy((err) => {
+
+        if (err) {
+            return res.send("Logout Error");
+        }
+
+        res.redirect("/login");
+
+    });
+
+});
+
 module.exports = router;

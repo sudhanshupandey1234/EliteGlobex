@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Order</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3>Edit Order</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form action="/orders/edit/<%= order[0].id %>" method="POST" id="orderForm">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Customer
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="customer_id"
+                            required>
+
+                            <option value="">
+                                Select Customer
+                            </option>
+
+                            <% customers.forEach(function(customer){ %>
+
+                                <option
+    value="<%= customer.id %>"
+    <%= customer.id == order[0].customer_id ? "selected" : "" %>>
+
+    <%= customer.customer_name %>
+
+</option>
+
+                            <% }) %>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Order Date
+                        </label>
+
+                        <input
+    type="date"
+    class="form-control"
+    name="order_date"
+    value="<%= order[0].order_date ? new Date(order[0].order_date).toISOString().split('T')[0] : '' %>"
+    required>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h4 class="mb-3">
+                    Products
+                </h4>
+
+                <table
+                    class="table table-bordered align-middle"
+                    id="productTable">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th width="35%">
+                                Product
+                            </th>
+
+                            <th width="12%">
+                                Qty
+                            </th>
+
+                            <th width="18%">
+                                Price
+                            </th>
+
+                            <th width="18%">
+                                Subtotal
+                            </th>
+
+                            <th width="17%">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+
+                                <select
+                                    class="form-select product"
+                                    name="product_id[]"
+                                    required>
+
+                                    <option value="">
+                                        Select Product
+                                    </option>
+
+                                    <% products.forEach(function(product){ %>
+
+                                    <option
+                                        value="<%= product.id %>"
+                                        data-price="<%= product.price %>">
+
+                                        <%= product.product_name %>
+                                        (₹<%= product.price %>)
+
+                                    </option>
+
+                                    <% }) %>
+
+                                </select>
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    class="form-control qty"
+                                    name="quantity[]"
+                                    value="1"
+                                    min="1">
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    class="form-control price"
+                                    name="price[]"
+                                    readonly>
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    class="form-control subtotal"
+                                    name="subtotal[]"
+                                    readonly>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger removeRow">
+
+                                    Delete
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <button
+                    type="button"
+                    id="addRow"
+                    class="btn btn-primary">
+
+                    + Add Product
+
+                </button>
+
+                <hr>
+                                <div class="row mt-4">
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Total Amount
+                        </label>
+
+                        <input
+    type="number"
+    class="form-control"
+    id="grandTotal"
+    name="total_amount"
+    value="<%= order[0].total_amount %>"
+    readonly>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Paid Amount
+                        </label>
+
+                        <input
+    type="number"
+    class="form-control"
+    id="paidAmount"
+    name="paid_amount"
+    value="<%= order[0].paid_amount %>">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            Pending Amount
+                        </label>
+
+                        <input
+    type="number"
+    class="form-control"
+    id="pendingAmount"
+    name="pending_amount"
+    value="<%= order[0].pending_amount %>"
+    readonly>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Payment Status
+                        </label>
+
+                        <select
+class="form-select"
+name="payment_status">
+
+<option value="Pending"
+<%= order[0].payment_status=="Pending"?"selected":"" %>>
+Pending
+</option>
+
+<option value="Partial"
+<%= order[0].payment_status=="Partial"?"selected":"" %>>
+Partial
+</option>
+
+<option value="Paid"
+<%= order[0].payment_status=="Paid"?"selected":"" %>>
+Paid
+</option>
+
+</select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Delivery Status
+                        </label>
+
+                        <select
+class="form-select"
+name="delivery_status">
+
+<option value="Pending"
+<%= order[0].delivery_status=="Pending"?"selected":"" %>>
+Pending
+</option>
+
+<option value="Packed"
+<%= order[0].delivery_status=="Packed"?"selected":"" %>>
+Packed
+</option>
+
+<option value="Shipped"
+<%= order[0].delivery_status=="Shipped"?"selected":"" %>>
+Shipped
+</option>
+
+<option value="In Transit"
+<%= order[0].delivery_status=="In Transit"?"selected":"" %>>
+In Transit
+</option>
+
+<option value="Delivered"
+<%= order[0].delivery_status=="Delivered"?"selected":"" %>>
+Delivered
+</option>
+
+<option value="Cancelled"
+<%= order[0].delivery_status=="Cancelled"?"selected":"" %>>
+Cancelled
+</option>
+
+</select>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Tracking Number
+                        </label>
+
+                        <input
+type="text"
+class="form-control"
+name="tracking_number"
+value="<%= order[0].tracking_number %>">
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Courier Name
+                        </label>
+
+                        <input
+type="text"
+class="form-control"
+name="courier_name"
+value="<%= order[0].courier_name %>">
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <label class="form-label">
+                    Remarks
+                </label>
+
+                <textarea
+class="form-control"
+rows="3"
+name="remarks"><%= order[0].remarks %></textarea>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    Edit Order
+
+                </button>
+
+                <a
+                    href="/orders"
+                    class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/js/order.js"></script>
+
+</body>
+</html>

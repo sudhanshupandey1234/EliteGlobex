@@ -10,14 +10,76 @@
 
 <body class="bg-light">
 
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-        <span class="navbar-brand">Elite Globex</span>
-        <span class="text-white">Welcome, <%= user.name %></span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="/dashboard">
+            Elite Globex ERP
+        </a>
+
+        <div class="ms-auto">
+
+            <span class="text-white me-3">
+
+                Welcome,
+                <strong><%= user.name %></strong>
+
+            </span>
+
+            <a href="/logout" class="btn btn-danger btn-sm">
+
+                Logout
+
+            </a>
+
+        </div>
+
     </div>
+
 </nav>
 
 <div class="container mt-5">
+
+    <h2 class="mb-4">
+
+    Dashboard
+
+</h2>
+
+<div class="row mb-4">
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/customers" class="btn btn-primary w-100 p-3">
+
+            👥 View Customers
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/products" class="btn btn-success w-100 p-3">
+
+            📦 View Products
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/orders" class="btn btn-warning w-100 p-3">
+
+            📋 View Orders
+
+        </a>
+
+    </div>
+
+</div>
 
     <div class="row">
 
@@ -49,8 +111,62 @@
 </div>
 
     </div>
+    <hr>
+
+<h3 class="mb-3">
+
+    Quick Actions
+
+</h3>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/customers/add"
+           class="btn btn-outline-primary w-100">
+
+            ➕ Add Customer
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/products/add"
+           class="btn btn-outline-success w-100">
+
+            ➕ Add Product
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/orders/add"
+           class="btn btn-outline-warning w-100">
+
+            ➕ Create Order
+
+        </a>
+
+    </div>
 
 </div>
+
+</div>
+
+<hr>
+
+<p class="text-center text-muted">
+
+© 2026 Elite Globex ERP
+
+Developed by Sudhanshu Pandey
+
+</p>
 
 </body>
 </html>
