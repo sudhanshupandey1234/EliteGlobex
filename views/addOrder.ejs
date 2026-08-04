@@ -12,6 +12,36 @@
 
 <div class="container mt-4">
 
+    <% if(success && success.length > 0){ %>
+
+<div class="alert alert-success alert-dismissible fade show">
+
+    ✅ <%= success[0] %>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="alert">
+    </button>
+
+</div>
+
+<% } %>
+
+<% if(error && error.length > 0){ %>
+
+<div class="alert alert-danger alert-dismissible fade show">
+
+    ❌ <%= error[0] %>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="alert">
+    </button>
+
+</div>
+
+<% } %>
+
     <div class="card shadow">
 
         <div class="card-header bg-primary text-white">

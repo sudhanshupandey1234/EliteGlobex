@@ -14,31 +14,72 @@
 
     <hr>
 
-    <form action="/customers/add" method="POST">
+    <form action="/customers/add"
+      method="POST"
+      id="customerForm"
+      novalidate>
 
         <div class="mb-3">
             <label>Customer Name</label>
-            <input type="text" name="customer_name" class="form-control" required>
+            <input
+type="text"
+name="customer_name"
+class="form-control"
+id="customer_name"
+maxlength="50"
+required>
+
+<div class="invalid-feedback">
+Please enter customer name.
+</div>
         </div>
 
         <div class="mb-3">
             <label>Company Name</label>
-            <input type="text" name="company_name" class="form-control">
+            <input
+type="text"
+name="company_name"
+class="form-control"
+maxlength="100">
         </div>
 
         <div class="mb-3">
             <label>Phone</label>
-            <input type="text" name="phone" class="form-control">
+            <input
+type="text"
+name="phone"
+id="phone"
+class="form-control"
+maxlength="10"
+pattern="[0-9]{10}"
+required>
+
+<div class="invalid-feedback">
+Enter a valid 10-digit mobile number.
+</div>
         </div>
 
         <div class="mb-3">
             <label>Email</label>
-            <input type="email" name="email" class="form-control">
+            <input
+type="email"
+name="email"
+id="email"
+class="form-control"
+maxlength="100">
+
+<div class="invalid-feedback">
+Enter a valid email address.
+</div>
         </div>
 
         <div class="mb-3">
             <label>Address</label>
-            <textarea name="address" class="form-control"></textarea>
+            <textarea
+name="address"
+class="form-control"
+rows="3"
+maxlength="250"></textarea>
         </div>
 
         <button class="btn btn-success">
@@ -52,6 +93,25 @@
     </form>
 
 </div>
+
+<script>
+
+const form = document.getElementById("customerForm");
+
+form.addEventListener("submit", function(e){
+
+    if(!form.checkValidity()){
+
+        e.preventDefault();
+        e.stopPropagation();
+
+    }
+
+    form.classList.add("was-validated");
+
+});
+
+</script>
 
 </body>
 </html>

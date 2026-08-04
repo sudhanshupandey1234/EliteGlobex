@@ -42,13 +42,35 @@ exports.showAddCustomer = (req, res) => {
 // ==============================
 exports.saveCustomer = (req, res) => {
 
-    const {
+    let {
         customer_name,
         company_name,
         phone,
         email,
         address
     } = req.body;
+
+    // Remove extra spaces
+    customer_name = customer_name.trim();
+    company_name = company_name.trim();
+    phone = phone.trim();
+    email = email.trim();
+    address = address.trim();
+
+    // Customer Name Validation
+    if (customer_name === "") {
+        return res.send("Customer Name is required.");
+    }
+
+    // Phone Validation
+    if (!/^[0-9]{10}$/.test(phone)) {
+        return res.send("Phone number must be exactly 10 digits.");
+    }
+
+    // Email Validation (only if entered)
+    if (email !== "" && !/^\S+@\S+\.\S+$/.test(email)) {
+        return res.send("Invalid Email Address.");
+    }
 
     const customerData = [
         customer_name,
@@ -64,6 +86,8 @@ exports.saveCustomer = (req, res) => {
             console.log(err);
             return res.send("Database Error");
         }
+
+        req.flash("success", "Customer added successfully.");
 
         res.redirect("/customers");
 
@@ -131,6 +155,8 @@ exports.updateCustomer = (req, res) => {
             return res.send("Database Error");
         }
 
+        req.flash("success", "Customer updated successfully.");
+
         res.redirect("/customers");
 
     });
@@ -147,9 +173,30 @@ exports.deleteCustomer = (req, res) => {
     customerModel.deleteCustomer(id, (err) => {
 
         if (err) {
+
+            if (err.code === "ER_ROW_IS_REFERENCED_2") {
+
+                req.flash(
+                    "error",
+                    "Customer cannot be deleted because orders exist for this customer."
+                );
+
+                return res.redirect("/customers");
+
+            }
+
             console.log(err);
-            return res.send("Database Error");
+
+            req.flash("error", "Database Error.");
+
+            return res.redirect("/customers");
+
         }
+
+        req.flash(
+            "success",
+            "Customer deleted successfully."
+        );
 
         res.redirect("/customers");
 

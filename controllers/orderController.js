@@ -78,6 +78,34 @@ exports.saveOrder = (req, res) => {
 
     } = req.body;
 
+    // =========================
+// Validation
+// =========================
+
+if (!customer_id) {
+
+    req.flash("error", "Please select a customer.");
+
+    return res.redirect("/orders/add");
+
+}
+
+if (!product_id || product_id.length === 0) {
+
+    req.flash("error", "Please add at least one product.");
+
+    return res.redirect("/orders/add");
+
+}
+
+if (Number(total_amount) <= 0) {
+
+    req.flash("error", "Total amount must be greater than 0.");
+
+    return res.redirect("/orders/add");
+
+}
+
     const orderData = [
 
         customer_id,
@@ -97,11 +125,16 @@ exports.saveOrder = (req, res) => {
 
         if (err) {
 
-            console.log(err);
+    console.log(err);
 
-            return res.send(err.sqlMessage);
+    req.flash("error", "Database Error.");
 
-        }
+    return res.redirect("/orders/add");
+
+}
+
+
+
 
         const orderId = result.insertId;
 
@@ -135,7 +168,9 @@ exports.saveOrder = (req, res) => {
 
         }
 
-        res.redirect("/orders");
+        req.flash("success", "Order created successfully.");
+
+res.redirect("/orders");
 
     });
 

@@ -8,6 +8,7 @@ const productRoutes = require("./routes/productRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const app = express();
 const orderRoutes = require("./routes/orderRoutes");
+const flash = require("connect-flash");
 
 const PORT = 3000;
 
@@ -20,6 +21,16 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+app.use(flash());
+
+app.use((req, res, next) => {
+
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+
+    next();
+
+});
 
 // Static Files
 app.use(express.static(path.join(__dirname, "public")));

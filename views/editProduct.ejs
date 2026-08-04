@@ -11,6 +11,36 @@
 
 <div class="container mt-5">
 
+    <% if(success && success.length > 0){ %>
+
+<div class="alert alert-success alert-dismissible fade show">
+
+    ✅ <%= success[0] %>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="alert">
+    </button>
+
+</div>
+
+<% } %>
+
+<% if(error && error.length > 0){ %>
+
+<div class="alert alert-danger alert-dismissible fade show">
+
+    ❌ <%= error[0] %>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="alert">
+    </button>
+
+</div>
+
+<% } %>
+
     <h2>Edit Product</h2>
 
     <hr>
