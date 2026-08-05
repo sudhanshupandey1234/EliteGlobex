@@ -9,15 +9,19 @@ exports.getCustomers = (req, res) => {
         return res.redirect("/login");
     }
 
-    customerModel.getAllCustomers((err, results) => {
+    const search = req.query.search || "";
+
+    customerModel.getAllCustomers(search, (err, results) => {
 
         if (err) {
             console.log(err);
-            return res.send("Database Error");
+            req.flash("error", "Database Error.");
+            return res.redirect("/dashboard");
         }
 
         res.render("customers", {
-            customers: results
+            customers: results,
+            search
         });
 
     });

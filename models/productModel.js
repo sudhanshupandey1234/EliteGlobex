@@ -1,11 +1,35 @@
 const db = require("../config/db");
 
 // Get All Products
-const getAllProducts = (callback) => {
+const getAllProducts = (search, callback) => {
 
-    const sql = "SELECT * FROM products ORDER BY id DESC";
+    let sql = `
+        SELECT *
+        FROM products
+    `;
 
-    db.query(sql, callback);
+    let values = [];
+
+    if (search) {
+
+        sql += `
+            WHERE
+                product_name LIKE ?
+                OR category LIKE ?
+        `;
+
+        const keyword = "%" + search + "%";
+
+        values = [
+            keyword,
+            keyword
+        ];
+
+    }
+
+    sql += " ORDER BY id DESC";
+
+    db.query(sql, values, callback);
 
 };
 

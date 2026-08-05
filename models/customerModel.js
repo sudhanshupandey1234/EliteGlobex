@@ -1,11 +1,37 @@
 const db = require("../config/db");
 
 // Get All Customers
-const getAllCustomers = (callback) => {
+const getAllCustomers = (search, callback) => {
 
-    const sql = "SELECT * FROM customers ORDER BY id DESC";
+    let sql = `
+        SELECT *
+        FROM customers
+    `;
 
-    db.query(sql, callback);
+    let values = [];
+
+    if (search) {
+
+        sql += `
+            WHERE
+                customer_name LIKE ?
+                OR company_name LIKE ?
+                OR phone LIKE ?
+        `;
+
+        const keyword = "%" + search + "%";
+
+        values = [
+            keyword,
+            keyword,
+            keyword
+        ];
+
+    }
+
+    sql += " ORDER BY id DESC";
+
+    db.query(sql, values, callback);
 
 };
 

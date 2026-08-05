@@ -7,15 +7,21 @@ exports.getProducts = (req, res) => {
         return res.redirect("/login");
     }
 
-    productModel.getAllProducts((err, results) => {
+    const search = req.query.search || "";
+
+    productModel.getAllProducts(search, (err, results) => {
 
         if (err) {
             console.log(err);
-            return res.send("Database Error");
+
+            req.flash("error", "Database Error.");
+
+            return res.redirect("/dashboard");
         }
 
         res.render("products", {
-            products: results
+            products: results,
+            search
         });
 
     });

@@ -91,15 +91,32 @@
     </div>
 
     <!-- Search Box -->
-    <div class="mb-3">
+    <form action="/customers" method="GET" class="mb-3">
+
+    <div class="input-group">
 
         <input
             type="text"
-            id="searchCustomer"
+            name="search"
             class="form-control"
-            placeholder="Search Customer...">
+            placeholder="Search Customer..."
+            value="<%= search %>">
+
+        <button class="btn btn-primary" type="submit">
+
+            🔍 Search
+
+        </button>
+
+        <a href="/customers" class="btn btn-secondary">
+
+            Reset
+
+        </a>
 
     </div>
+
+</form>
 
     <table class="table table-bordered table-hover">
 
