@@ -11,7 +11,7 @@ const app = express();
 const orderRoutes = require("./routes/orderRoutes");
 const flash = require("connect-flash");
 
-const PORT = 3000;
+
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -57,7 +57,8 @@ app.get("/", (req, res) => {
     res.render("login");
 });
 
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server Running On http://localhost:${PORT}`);
+    console.log(`🚀 Server Running on Port ${PORT}`);
 });
