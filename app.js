@@ -36,6 +36,10 @@ app.use((req, res, next) => {
 // Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
+// View Engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
 //routes
 
 app.use("/", authRoutes);
@@ -48,9 +52,6 @@ app.use("/", dashboardRoutes);
 
 app.use("/", orderRoutes);
 
-// View Engine
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
 
 // Home Route
 app.get("/", (req, res) => {
